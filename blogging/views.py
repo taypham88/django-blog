@@ -18,17 +18,21 @@ def stub_view(request, *args, **kwargs):
 
 class BlogListView(ListView):
 
-    # published = Post.objects.exclude(published_date__exact=None)
-    # queryset = published.order_by('-published_date')
-    queryset = Post
+    published = Post.objects.exclude(published_date__exact=None)
+    queryset = published.order_by('-published_date')
     template_name = 'blogging/list.html'
 
 class BlogDetailView(DetailView):
 
-    # published = Post.objects.exclude(published_date__exact=None)
-    # queryset = published.order_by('-published_date')
-    queryset = Post.objects.all()
+    published = Post.objects.exclude(published_date__exact=None)
+    queryset = published.order_by('-published_date')
     template_name = 'blogging/detail.html'
+
+    def post(self, request, *args, **kwargs):
+        post = self.get_object()
+        context = {'post': post}
+        return render(request, 'blogging/detail.html', context)
+
 
 # def list_view(request):
 #     published = Post.objects.exclude(published_date__exact=None)
